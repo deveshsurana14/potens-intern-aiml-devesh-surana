@@ -1,0 +1,14 @@
+# --- core RAG stack ---
+chromadb==1.5.9
+sentence-transformers>=3.0.0     # local embeddings + cross-encoder reranker
+groq==1.5.0                      # LLM (Llama 3.3 70B on Groq's free tier)
+
+# --- API + UI ---
+fastapi==0.139.0
+uvicorn==0.50.2
+pydantic==2.13.4
+streamlit>=1.36.0
+
+# --- dev / test ---
+pytest==9.1.1
+httpx==0.28.1
