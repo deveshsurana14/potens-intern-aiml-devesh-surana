@@ -1,0 +1,65 @@
+{
+  "description": "Ground-truth eval set for retrieval@k. Each item lists the source document(s) that genuinely contain the answer. A retrieval is a 'hit' at k if any gold document appears among the top-k retrieved chunks.",
+  "items": [
+    {
+      "id": "q1",
+      "question": "What percentage subsidy do small and marginal farmers get under the central Per Drop More Crop scheme?",
+      "gold_sources": ["01_pmksy_pdmc_central_guidelines.md"],
+      "gold_answer": "55% of the indicative unit cost."
+    },
+    {
+      "id": "q2",
+      "question": "What is the effective subsidy for small farmers in Maharashtra after the state top-up?",
+      "gold_sources": ["02_maharashtra_drip_subsidy_scheme.md"],
+      "gold_answer": "80% of the indicative unit cost."
+    },
+    {
+      "id": "q3",
+      "question": "What is the maximum command area per beneficiary allowed in Gujarat?",
+      "gold_sources": ["03_gujarat_drip_subsidy_scheme.md"],
+      "gold_answer": "10 hectares per beneficiary."
+    },
+    {
+      "id": "q4",
+      "question": "What is Gujarat's micro-irrigation adoption index in the NABARD study?",
+      "gold_sources": ["04_nabard_micro_irrigation_adoption_report.md"],
+      "gold_answer": "1.42 against a national baseline of 1.00."
+    },
+    {
+      "id": "q5",
+      "question": "What is the most common cause of drip system failure?",
+      "gold_sources": ["05_drip_irrigation_technical_guide.md"],
+      "gold_answer": "Emitter clogging (physical, chemical, or biological)."
+    },
+    {
+      "id": "q6",
+      "question": "What is the standard end-to-end timeline from installation to subsidy credit?",
+      "gold_sources": ["06_dbt_disbursement_and_grievance_circular.md"],
+      "gold_answer": "Should not exceed 35 days; cases beyond 45 days are auto-flagged."
+    },
+    {
+      "id": "q7",
+      "question": "How is subsidy paid to the farmer under the Gujarat GGRC model?",
+      "gold_sources": ["03_gujarat_drip_subsidy_scheme.md", "06_dbt_disbursement_and_grievance_circular.md"],
+      "gold_answer": "Supplier-credit model: subsidy is paid to the empanelled supplier, farmer pays only the balance."
+    },
+    {
+      "id": "q8",
+      "question": "How much can drip irrigation reduce water use for horticulture crops compared to flood irrigation?",
+      "gold_sources": ["04_nabard_micro_irrigation_adoption_report.md", "05_drip_irrigation_technical_guide.md"],
+      "gold_answer": "By roughly 40% to 60%."
+    },
+    {
+      "id": "q9",
+      "question": "What is the three-tier grievance redressal structure for micro-irrigation subsidy?",
+      "gold_sources": ["06_dbt_disbursement_and_grievance_circular.md"],
+      "gold_answer": "Tier 1 Taluka Officer, Tier 2 District Superintending Officer, Tier 3 State Nodal Officer."
+    },
+    {
+      "id": "q10",
+      "question": "What is the cooling-off period before a farmer can claim drip subsidy again for the same land in Gujarat?",
+      "gold_sources": ["03_gujarat_drip_subsidy_scheme.md"],
+      "gold_answer": "Once every five years for drip systems."
+    }
+  ]
+}
