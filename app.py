@@ -19,10 +19,97 @@ from rag.pipeline import build_system
 
 st.set_page_config(page_title="Micro-Irrigation Doc Q&A", page_icon="💧", layout="wide")
 
+st.markdown(
+    """
+    <style>
+      /* ---- base ---- */
+      .stApp { background: #ffffff; }
+      .block-container { padding-top: 1.6rem; max-width: 1080px; }
+      html, body, [class*="css"] {
+        font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      }
+
+      /* ---- hero header ---- */
+      .hero {
+        background: linear-gradient(135deg, #ecfeff 0%, #eff6ff 100%);
+        border: 1px solid #cffafe;
+        border-radius: 18px;
+        padding: 26px 30px;
+        margin-bottom: 22px;
+      }
+      .hero-title {
+        font-size: 2rem; font-weight: 800; color: #0f172a; letter-spacing: -0.02em;
+      }
+      .hero-title span { color: #0891b2; }
+      .hero-sub { color: #475569; font-size: 1.02rem; margin-top: 6px; }
+      .chips { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+      .chip {
+        background: #ffffff; border: 1px solid #cbd5e1; color: #0f172a;
+        padding: 5px 12px; border-radius: 999px; font-size: 0.82rem; font-weight: 600;
+      }
+
+      /* ---- sidebar ---- */
+      [data-testid="stSidebar"] { background: #f8fafc; border-right: 1px solid #e2e8f0; }
+
+      /* ---- buttons ---- */
+      .stButton > button {
+        border-radius: 10px; border: 1px solid #cbd5e1; background: #ffffff;
+        color: #0f172a; font-weight: 600; transition: all .15s ease;
+      }
+      .stButton > button:hover {
+        border-color: #0891b2; color: #0891b2; background: #ecfeff;
+      }
+      [data-testid="baseButton-primary"] {
+        background: #0891b2; color: #ffffff; border: none;
+      }
+      [data-testid="baseButton-primary"]:hover { background: #0e7490; color: #fff; }
+
+      /* ---- text input ---- */
+      .stTextInput input {
+        border-radius: 10px; border: 1px solid #cbd5e1; padding: 10px 12px;
+      }
+      .stTextInput input:focus {
+        border-color: #0891b2; box-shadow: 0 0 0 3px rgba(8,145,178,.15);
+      }
+
+      /* ---- tabs ---- */
+      [data-baseweb="tab"] { font-weight: 600; }
+
+      /* ---- expanders as cards ---- */
+      [data-testid="stExpander"] {
+        border: 1px solid #e2e8f0; border-radius: 12px; background: #ffffff;
+        box-shadow: 0 1px 2px rgba(15,23,42,.04); margin-bottom: 8px;
+      }
+
+      /* ---- alerts / containers ---- */
+      [data-testid="stAlert"] { border-radius: 12px; }
+      h3 { color: #0f172a; }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 
 @st.cache_resource(show_spinner="Loading models and vector store…")
 def get_system():
     return build_system(offline=False)
+
+
+# Acronyms we want to keep upper-cased when prettifying file names.
+_ACRONYMS = {"pmksy", "pdmc", "dbt", "nabard"}
+
+
+def pretty_source(filename: str) -> str:
+    """'02_maharashtra_drip_subsidy_scheme.md' -> '2. Maharashtra Drip Subsidy Scheme'."""
+    stem = filename.rsplit(".", 1)[0]
+    parts = stem.split("_")
+    num = ""
+    if parts and parts[0].isdigit():
+        num = str(int(parts[0]))
+        parts = parts[1:]
+    words = [w.upper() if w.lower() in _ACRONYMS else w.capitalize() for w in parts]
+    title = " ".join(words)
+    return f"{num}. {title}" if num else title
 
 
 def confidence_badge(conf: float, review: bool) -> None:
@@ -35,9 +122,23 @@ def confidence_badge(conf: float, review: bool) -> None:
     st.progress(conf)
 
 
-st.title("💧 Micro-Irrigation Policy — Document Q&A with Citations")
-st.caption("RAG over 6 Indian drip-irrigation subsidy & technical documents · "
-           "Groq Llama 3.3 · ChromaDB · cross-encoder reranker")
+st.markdown(
+    """
+    <div class="hero">
+      <div class="hero-title">💧 Micro-Irrigation Policy <span>Q&amp;A</span></div>
+      <div class="hero-sub">Citation-first RAG over six Indian drip-irrigation policy
+      &amp; technical documents · Groq Llama&nbsp;3.3 · ChromaDB · cross-encoder reranker</div>
+      <div class="chips">
+        <span class="chip">📎 Grounded citations</span>
+        <span class="chip">🛡️ No hallucination</span>
+        <span class="chip">🌐 English · हिंदी · मराठी</span>
+        <span class="chip">↕️ Reranked retrieval</span>
+        <span class="chip">👤 Human-in-the-loop</span>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 try:
     system = get_system()
@@ -49,7 +150,8 @@ except Exception as e:  # pragma: no cover - UI guard
 with st.sidebar:
     st.subheader("Indexed documents")
     for s in sources:
-        st.write(f"• {s}")
+        st.markdown(f"**{pretty_source(s)}**")
+        st.caption(s)
     st.divider()
     st.caption(f"{system.store.count()} chunks indexed")
     st.caption("No-hallucination gate + confidence-based human-in-the-loop are ON.")
@@ -85,8 +187,9 @@ with tab_ask:
             st.info("🚫 " + ans.answer + "  \n*(The system refused rather than "
                     "guess — this is the no-hallucination guard working.)*")
         else:
-            st.markdown("### Answer")
-            st.write(ans.answer)
+            with st.container(border=True):
+                st.markdown("### Answer")
+                st.write(ans.answer)
         confidence_badge(ans.confidence, ans.needs_human_review)
 
         if ans.citations:
