@@ -224,7 +224,7 @@ then reviewing, running, and validating everything that came back.
 
 | Tool | Approx. usage | What it was used for |
 |------|---------------|----------------------|
-| Claude (Anthropic, Opus 4.8) | ~6 messages (large code-generation replies, roughly ~20–30k tokens total, rough) | Generated the project from focused prompts: architecture, the structure-aware chunking, the two-layer no-hallucination guard, the reranker / confidence / multilingual modules, the FastAPI service, the Streamlit UI, the tests, and the eval harness. I set the framing and constraints in each prompt, then read, ran, and adjusted the output. |
+| Claude (Anthropic, Opus 4.8) | ~7 messages (large code-generation replies, roughly ~20–30k tokens total, rough) | Generated the project from focused prompts: architecture, the structure-aware chunking, the two-layer no-hallucination guard, the reranker / confidence / multilingual modules, the FastAPI service, the Streamlit UI, the tests, and the eval harness. I set the framing and constraints in each prompt, then read, ran, and adjusted the output. |
 | Claude Code | a short session | Organized the git commit history and helped finalize this README. |
 
 I did not use any other AI tool. The engineering decisions I stand behind —
