@@ -11,6 +11,8 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
@@ -18,6 +20,11 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DOCS_DIR = PROJECT_ROOT / "docs"
 CHROMA_DIR = PROJECT_ROOT / "data" / "chroma"
 COLLECTION_NAME = "agri_micro_irrigation"
+
+# Load a local .env (if present) BEFORE the Settings defaults below read the
+# environment, so GROQ_API_KEY and the optional overrides are picked up without
+# having to export them by hand.
+load_dotenv(PROJECT_ROOT / ".env")
 
 
 @dataclass

@@ -2,6 +2,7 @@
 chromadb==0.6.3                  # 1.5.9's Rust core segfaults on Windows; 0.6.3 uses the stable Python/SQLite core
 sentence-transformers>=3.0.0     # local embeddings + cross-encoder reranker
 groq==1.5.0                      # LLM (Llama 3.3 70B on Groq's free tier)
+python-dotenv>=1.0.0             # load GROQ_API_KEY (and overrides) from .env
 
 # --- API + UI ---
 fastapi==0.139.0
